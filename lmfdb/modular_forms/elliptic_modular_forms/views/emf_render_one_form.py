@@ -118,7 +118,6 @@ def set_info_for_one_modular_form(level=None, weight=None, character=None, label
     else:
         name += "\(\Gamma_0(%s)\)" % (level)
     if int(character) != 0 and hasattr(WNF,"conrey_character"):
-        conrey_char = WNF.conrey_character()
         conrey_char_name = WNF.conrey_character_name()
         name += " with character \(%s\)" % (conrey_char_name)
     else:
