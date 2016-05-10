@@ -45,6 +45,8 @@ def render_web_newform(level, weight, character, label, **kwds):
     ## Check if we want to download either file of the function or Fourier coefficients
     if 'download' in info and 'error' not in info:
         return send_file(info['tempfile'], as_attachment=True, attachment_filename=info['filename'])
+    if weight == 1:
+        return render_web_newform_weight1(level, weight, character, label)
     return render_template("emf_web_newform.html", **info)
 
 
@@ -339,6 +341,15 @@ def set_info_for_web_newform(level=None, weight=None, character=None, label=None
     return info
 
 import flask
+
+def render_web_newform_weight1(level, weight, character, label, **kwds):
+    r"""
+    Renders the webpage for one elliptic modular form of weight one.
+
+    """
+    citation = ['Sage:' + version()]
+    WNF = WebNewForm_weight1(level=level, character=character, label=label)
+    return render_template("emf_web_newform_weight1.html", {'f': WNF})
 
 
 ## @emf.route("/Qexp/<int:level>/<int:weight>/<int:character>/<label>")

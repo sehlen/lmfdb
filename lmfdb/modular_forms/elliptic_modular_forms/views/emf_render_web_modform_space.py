@@ -35,6 +35,8 @@ def render_web_modform_space(level=None, weight=None, character=None, label=None
     emf_logger.debug("In render_elliptic_modular_form_space kwds: {0}".format(kwds))
     emf_logger.debug(
         "Input: level={0},weight={1},character={2},label={3}".format(level, weight, character, label))
+    if weight == 1:
+        return render_web_modform_space_weight1(level=level,character=character,label=label, **kwds)
     info = to_dict(kwds)
     info['level'] = level
     info['weight'] = weight
@@ -173,3 +175,6 @@ def set_info_for_modular_form_space(level=None, weight=None, character=None, lab
     
     return info
 
+def render_web_modform_space_weight1(level,character,label, **kwds):
+    WMFS = WebModFormSpace(level = level, weight = weight, character = character, update_from_db=True)
+    return render_template("emf_web_modform_space_weigh1.html", {'space': WMFS})
