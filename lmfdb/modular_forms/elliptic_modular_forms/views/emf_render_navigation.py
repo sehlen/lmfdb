@@ -109,9 +109,6 @@ def render_elliptic_modular_form_navigation_wp(**args):
     table = {}
     info['table'] = {}
     level_range = range(limits_level[0],limits_level[1]+1)
-    # we don't have weight 1 in database
-    if limits_weight[0]==1:
-        limits_weight=(2,limits_weight[1])
     weight_range = range(limits_weight[0],limits_weight[1]+1)
     if group == 0:
         weight_range = filter(is_even,weight_range)
