@@ -22,7 +22,7 @@ AUTHOR: Fredrik Strömberg  <fredrik314@gmail.com>
 from flask import render_template, url_for, send_file,flash
 from lmfdb.utils import to_dict 
 from sage.all import uniq
-from lmfdb.modular_forms.elliptic_modular_forms.backend.web_modform_space import WebModFormSpace_cached, WebModFormSpace
+from lmfdb.modular_forms.elliptic_modular_forms.backend.web_modform_space_weight1 import WebModFormSpace_weight1
 from lmfdb.modular_forms.elliptic_modular_forms import EMF, emf_logger, emf, EMF_TOP
 from lmfdb.number_fields.number_field import poly_to_field_label, field_pretty
 ###
@@ -77,9 +77,6 @@ def render_web_modform_space(level=None, weight=None, character=None, label=None
     if info.has_key('error'):
         emf_logger.debug("error={0}".format(info['error']))
     return render_template("emf_web_modform_space.html", **info)
-
-
-
     
 def set_info_for_modular_form_space(level=None, weight=None, character=None, label=None, **kwds):
     r"""
@@ -176,5 +173,15 @@ def set_info_for_modular_form_space(level=None, weight=None, character=None, lab
     return info
 
 def render_web_modform_space_weight1(level,character,label, **kwds):
-    WMFS = WebModFormSpace(level = level, weight = weight, character = character, update_from_db=True)
-    return render_template("emf_web_modform_space_weigh1.html", {'space': WMFS})
+    WMFS = WebModFormSpace_weight1(level = level, character = character, update_from_db=True)
+    info = {'space': WMFS}
+    bread = [(EMF_TOP, url_for('emf.render_elliptic_modular_forms'))]
+    bread.append(("Level %s" % level, url_for('emf.render_elliptic_modular_forms', level=level)))
+    bread.append(
+        ("Weight 1", url_for('emf.render_elliptic_modular_forms', level=level, weight=1)))
+    bread.append(
+        ("Character \(\chi_{%s}(%s, \cdot)\)" % (level, character), url_for('emf.render_elliptic_modular_forms', level=level, weight=1, character=character)))
+    # emf_logger.debug("friends={0}".format(friends))
+    info['bread'] = bread
+    info['learnmore'] = [('History of Modular forms', url_for('holomorphic_mf_history'))]
+    return render_template("emf_web_modform_space_weight1.html", **info)

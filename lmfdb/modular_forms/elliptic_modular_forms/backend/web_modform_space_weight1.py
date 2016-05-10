@@ -87,7 +87,7 @@ class WebHeckeOrbits_weight1(WebDict):
     """
 
     def __init__(self, name, level, character, parent=None,**kwds):
-        emf_logger.debug("Get Hecke orbits! {0},{1},{2},{3},{4},kwds={5}".format(name,level,weight,character,type(parent),kwds))
+        emf_logger.debug("Get Hecke orbits! {0},{1},{2},{3},{4},kwds={5}".format(name,level,1,character,type(parent),kwds))
         self.level = level
         self.weight = 1
         self.character = character
@@ -173,7 +173,7 @@ class WebModFormSpace_weight1(WebObject, CachedRepresentation):
 
         # I added this reduction since otherwise there is a problem with
         # caching the hecke orbits (since they have self as  parent)
-        self._reduction = (type(self),(level,weight,character),
+        self._reduction = (type(self),(level,1,character),
                            {'cuspidal':cuspidal, 'prec':prec, 'bitprec':bitprec, 'update_from_db':update_from_db,'update_hecke_orbits':update_hecke_orbits})
         if isinstance(character, WebChar):
             character_number = character.number
@@ -191,7 +191,7 @@ class WebModFormSpace_weight1(WebObject, CachedRepresentation):
             WebDict('_character_galois_orbit_embeddings', default_value={}),
             WebCharProperty('character_orbit_rep', modulus=level, save_to_fs=True),
             WebCharProperty('character_used_in_computation', modulus=level, save_to_fs=True),
-            WebStr('space_label', default_value=space_label(level=level, weight=weight, character=character), save_to_fs=True),
+            WebStr('space_label', default_value=space_label(level=level, weight=1, character=character), save_to_fs=True),
             WebStr('space_orbit_label', value='', save_to_db=True),            
             WebInt('dimension'),
             WebInt('dimension_cusp_forms'),
@@ -211,7 +211,7 @@ class WebModFormSpace_weight1(WebObject, CachedRepresentation):
                     )
             
         emf_logger.debug("Have set properties of space 1 !!")
-        super(WebModFormSpace, self).__init__(update_from_db=update_from_db, **kwargs)
+        super(WebModFormSpace_weight1, self).__init__(update_from_db=update_from_db, **kwargs)
         emf_logger.debug("Have set properties of space 2 !!")
         emf_logger.debug("orbits={0}".format(self.hecke_orbits))
 

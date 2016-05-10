@@ -342,14 +342,16 @@ def set_info_for_web_newform(level=None, weight=None, character=None, label=None
 
 import flask
 
-def render_web_newform_weight1(level, weight, character, label, **kwds):
+def render_web_newform_weight1(level, character, label, **kwds):
     r"""
     Renders the webpage for one elliptic modular form of weight one.
 
     """
     citation = ['Sage:' + version()]
     WNF = WebNewForm_weight1(level=level, character=character, label=label)
-    return render_template("emf_web_newform_weight1.html", {'f': WNF})
+    info = {"f": WNF}
+    info['citation': citation]
+    return render_template("emf_web_newform_weight1.html", **info)
 
 
 ## @emf.route("/Qexp/<int:level>/<int:weight>/<int:character>/<label>")

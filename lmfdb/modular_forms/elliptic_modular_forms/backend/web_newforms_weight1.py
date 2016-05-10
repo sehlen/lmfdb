@@ -183,7 +183,7 @@ class WebNewForm_weight1(WebObject, CachedRepresentation):
         emf_logger.debug("In WebNewForm_weight1 {0}".format((level,character,label,parent,update_from_db)))
         if isinstance(level,basestring):
             level,weight,character,label = parse_newform_label(level)
-        self._reduction = (type(self),(level,weight,character,label),{'parent':parent,'update_from_db':update_from_db})
+        self._reduction = (type(self),(level,1,character,label),{'parent':parent,'update_from_db':update_from_db})
         if isinstance(character, WebChar):
             character_number = character.number
         else:
@@ -235,7 +235,7 @@ class WebNewForm_weight1(WebObject, CachedRepresentation):
 #                                    else False),
             )
         emf_logger.debug("After init properties 1")
-        super(WebNewForm, self).__init__(
+        super(WebNewForm_weight1, self).__init__(
             update_from_db=update_from_db,
             **kwargs
             )
