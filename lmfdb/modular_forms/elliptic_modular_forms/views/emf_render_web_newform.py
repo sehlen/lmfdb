@@ -24,6 +24,7 @@ AUTHORS:
 from flask import render_template, url_for,  send_file
 from sage.all import version,uniq,ZZ,Cusp,Infinity,latex,QQ
 from lmfdb.modular_forms.elliptic_modular_forms.backend.web_newforms import WebNewForm_cached, WebNewForm
+from lmfdb.modular_forms.elliptic_modular_forms.backend.web_newforms_weight1 import WebNewForm_weight1
 from lmfdb.modular_forms.elliptic_modular_forms.backend.web_modform_space import WebModFormSpace_cached
 from lmfdb.utils import to_dict,ajax_more
 from lmfdb.modular_forms.backend.mf_utils import my_get
@@ -46,8 +47,9 @@ def render_web_newform(level, weight, character, label, **kwds):
     if 'download' in info and 'error' not in info:
         return send_file(info['tempfile'], as_attachment=True, attachment_filename=info['filename'])
     if weight == 1:
-        return render_web_newform_weight1(level, weight, character, label)
-    return render_template("emf_web_newform.html", **info)
+        return render_template("emf_web_newform_weight1.html", **info)
+    else:
+        return render_template("emf_web_newform.html", **info)
 
 
 def set_info_for_web_newform(level=None, weight=None, character=None, label=None, **kwds):
@@ -70,7 +72,10 @@ def set_info_for_web_newform(level=None, weight=None, character=None, label=None
     emf_logger.debug("PREC: {0}".format(prec))
     emf_logger.debug("BITPREC: {0}".format(bprec))    
     try:
-        WNF = WebNewForm_cached(level=level, weight=weight, character=character, label=label)
+        if weight == 1:
+            WNF = WebNewForm_weight1(level=level, character=character, label=label)
+        else:
+            WNF = WebNewForm_cached(level=level, weight=weight, character=character, label=label)
         emf_logger.critical("defined webnewform for rendering!")
         # if info.has_key('download') and info.has_key('tempfile'):
         #     WNF._save_to_file(info['tempfile'])
@@ -216,8 +221,9 @@ def set_info_for_web_newform(level=None, weight=None, character=None, label=None
     # else:
     #    info['embeddings'] = ''
     emf_logger.debug("PREC2: {0}".format(prec))
-    info['embeddings'] = WNF._embeddings['values'] #q_expansion_embeddings(prec, bprec,format='latex')
-    info['embeddings_len'] = len(info['embeddings'])
+    if type(WNF._embeddings) == dict and WNF._embeddings.has_key('values'):
+        info['embeddings'] = WNF._embeddings['values'] #q_expansion_embeddings(prec, bprec,format='latex')
+        info['embeddings_len'] = len(info['embeddings'])
     properties2 = []
     if (ZZ(level)).is_squarefree():
         info['twist_info'] = WNF.twist_info
@@ -339,20 +345,6 @@ def set_info_for_web_newform(level=None, weight=None, character=None, label=None
     info['friends'] = friends
     info['max_cn'] = WNF.max_cn()
     return info
-
-import flask
-
-def render_web_newform_weight1(level, character, label, **kwds):
-    r"""
-    Renders the webpage for one elliptic modular form of weight one.
-
-    """
-    citation = ['Sage:' + version()]
-    WNF = WebNewForm_weight1(level=level, character=character, label=label)
-    info = {"f": WNF}
-    info['citation': citation]
-    return render_template("emf_web_newform_weight1.html", **info)
-
 
 ## @emf.route("/Qexp/<int:level>/<int:weight>/<int:character>/<label>")
 ## def get_qexp(level, weight, character, label, **kwds):

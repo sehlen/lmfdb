@@ -247,7 +247,7 @@ class WebModFormSpaceProperty_weight1(WebProperty):
         self.character = character
         if value is None:
             value = WebModFormSpace_weight1(self.level, self.character,update_hecke_orbits=update_hecke_orbits)
-        super(WebModFormSpaceProperty, self).__init__(name,
+        super(WebModFormSpaceProperty_weight1, self).__init__(name,
                                                       include_in_update=include_in_update,
                                                       save_to_db=True,
                                                       save_to_fs=False,

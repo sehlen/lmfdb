@@ -23,6 +23,7 @@ from flask import render_template, url_for, send_file,flash
 from lmfdb.utils import to_dict 
 from sage.all import uniq
 from lmfdb.modular_forms.elliptic_modular_forms.backend.web_modform_space_weight1 import WebModFormSpace_weight1
+from lmfdb.modular_forms.elliptic_modular_forms.backend.web_modform_space import WebModFormSpace_cached
 from lmfdb.modular_forms.elliptic_modular_forms import EMF, emf_logger, emf, EMF_TOP
 from lmfdb.number_fields.number_field import poly_to_field_label, field_pretty
 ###
@@ -174,6 +175,7 @@ def set_info_for_modular_form_space(level=None, weight=None, character=None, lab
 
 def render_web_modform_space_weight1(level,character,label, **kwds):
     WMFS = WebModFormSpace_weight1(level = level, character = character, update_from_db=True)
+    emf_logger.debug("Got {0}".format(WMFS))
     info = {'space': WMFS}
     bread = [(EMF_TOP, url_for('emf.render_elliptic_modular_forms'))]
     bread.append(("Level %s" % level, url_for('emf.render_elliptic_modular_forms', level=level)))

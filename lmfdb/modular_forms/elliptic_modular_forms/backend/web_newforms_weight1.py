@@ -205,7 +205,7 @@ class WebNewForm_weight1(WebObject, CachedRepresentation):
                             include_in_update = True if character is None
                             else False),
             WebStr('character_naming_scheme', value='Conrey'),
-            WebStr('hecke_orbit_label', default_value=newform_label(level, weight, character_number, label)),
+            WebStr('hecke_orbit_label', default_value=newform_label(level, 1, character_number, label)),
             WebStr('label', default_value=label),
             WebInt('dimension'),
             WebqExp('q_expansion'),
@@ -242,15 +242,6 @@ class WebNewForm_weight1(WebObject, CachedRepresentation):
         emf_logger.debug("After init properties 2 prec={0}".format(self.prec))
         # We're setting the WebEigenvalues property after calling __init__ of the base class
         # because it will set hecke_orbit_label from the db first
-
-        ## 
-        ## We don't init the eigenvalues (since E*v is slow)
-        ## unless we (later) request a coefficient which is not
-        ## in self._coefficients
-        
-        self.eigenvalues = WebEigenvalues(self.hecke_orbit_label, prec = self.prec,init_dynamic_properties=False)
-        emf_logger.debug("After init properties 3")
-
     def __repr__(self):
         if self.dimension == 0:
             s = "Zero "
@@ -378,6 +369,9 @@ class WebNewForm_weight1(WebObject, CachedRepresentation):
                     if G.are_equivalent(c,Q/self.level):
                         self._atkin_lehner_eigenvalues_at_cusps[c] = Q,ev
         return self._atkin_lehner_eigenvalues_at_cusps
+
+    def max_cn(self):
+        return self.q_expansion.prec()
         
     def url(self):
         return url_for('emf.render_elliptic_modular_forms', level=self.level, weight=self.weight, character=self.character.number, label=self.label)
