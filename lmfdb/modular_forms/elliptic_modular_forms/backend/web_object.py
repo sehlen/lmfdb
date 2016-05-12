@@ -25,7 +25,7 @@ AUTHORS:
 from lmfdb.base import app
 from flask import url_for
 from lmfdb.modular_forms.elliptic_modular_forms import emf_version, emf_logger
-from lmfdb.modular_forms.elliptic_modular_forms.backend import get_files_from_gridfs, connect_to_modularforms_db
+from lmfdb.modular_forms.elliptic_modular_forms.backend import connect_to_modularforms_db
 from lmfdb.number_fields.number_field import poly_to_field_label
 from lmfdb.WebNumberField import field_pretty
 from lmfdb.utils import web_latex_split_on_pm
