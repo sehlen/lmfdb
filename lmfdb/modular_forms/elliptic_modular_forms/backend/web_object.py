@@ -717,7 +717,7 @@ class WebDate(WebProperty):
     _default_value = datetime.now()
 
     def __init__(self, name, value=None, save_to_fs=False, save_to_db=True, **kwargs):
-        date_fn = lambda t: datetime(t.year,t.month,t.day,t.hour,t.minute)
+        date_fn = lambda t: datetime(t.year, t.month, t.day, t.hour, t.minute, t.second)
         super(WebDate, self).__init__(name, value, date_fn, date_fn, save_to_fs=save_to_fs, save_to_db=save_to_db, **kwargs)
     
     
