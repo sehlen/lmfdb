@@ -892,18 +892,18 @@ class WebNumberField(WebDict):
             
     def set_extended_properties(self):
         if self._has_been_set:
-            if hasattr(self._value,'absolute_polynomial'):
-                setattr(self._value, "absolute_polynomial_latex", lambda n: web_latex_poly(self._value.absolute_polynomial(), n))
-            else:
-                try:
+            try:
+                if hasattr(self._value,'absolute_polynomial'):
+                    setattr(self._value, "absolute_polynomial_latex", lambda n: web_latex_poly(self._value.absolute_polynomial(), n))
+                else:
                     setattr(self._value, "absolute_polynomial_latex",'')
-                except AttributeError as e:
+                    if hasattr(self._value,'relative_polynomial'):
+                        setattr(self._value, "relative_polynomial_latex", lambda n: web_latex_poly(self._value.relative_polynomial(), n))
+                    else:
+                        setattr(self._value, "relative_polynomial_latex",'')
+            except AttributeError as e:
                     emf_logger.debug(e)
                     pass
-            if hasattr(self._value,'relative_polynomial'):
-                setattr(self._value, "relative_polynomial_latex", lambda n: web_latex_poly(self._value.relative_polynomial(), n))
-            else:
-                setattr(self._value, "relative_polynomial_latex",'')
 
 def web_latex_poly(pol, name='x', keepzeta=False):
     """
