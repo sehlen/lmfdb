@@ -898,7 +898,7 @@ class WebNumberField(WebDict):
                 try:
                     setattr(self._value, "absolute_polynomial_latex",'')
                 except AttributeError as e:
-                    emf_logger.degbug(e)
+                    emf_logger.debug(e)
                     pass
             if hasattr(self._value,'relative_polynomial'):
                 setattr(self._value, "relative_polynomial_latex", lambda n: web_latex_poly(self._value.relative_polynomial(), n))
