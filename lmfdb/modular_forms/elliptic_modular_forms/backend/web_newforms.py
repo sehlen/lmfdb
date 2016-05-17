@@ -264,7 +264,7 @@ class WebEigenvalues(WebObject, CachedRepresentation):
     
 class WebNewForm(WebObject, CachedRepresentation):
 
-    _key = ['level', 'weight', 'character', 'label','version']
+    _key = ['level', 'weight', 'character', 'label','version', 'prec']
     _file_key = ['hecke_orbit_label','version']
     if emf_version > 1.3:
         _collection_name = 'webnewforms2'
