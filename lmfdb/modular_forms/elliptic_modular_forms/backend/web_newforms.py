@@ -30,6 +30,7 @@ AUTHORS:
 import re
 
 from flask import url_for
+import pymongo
 
 from lmfdb.modular_forms.elliptic_modular_forms.backend.web_object import (
      WebObject,
@@ -202,8 +203,9 @@ class WebEigenvalues(WebObject, CachedRepresentation):
             )
 
     def update_from_db(self, **kwargs):
-
         self._add_to_fs_query = {'prec': {'$gt': int(self.prec-1)}}
+        self._sort = [('prec', pymongo.ASCENDING)]
+        self._sort_files = [('prec', pymongo.ASCENDING)]
         super(WebEigenvalues,self).update_from_db(**kwargs)
         #print "_ap=",self._ap
 
@@ -349,6 +351,7 @@ class WebNewForm(WebObject, CachedRepresentation):
         # records do not have this information stored in the file_collection
         # this should change in an upcoming version
         self._add_to_db_query = {'prec': {'$gt': int(self.prec-1)}}
+        self._sort = [('prec', pymongo.ASCENDING)]
         super(WebNewForm,self).update_from_db(**kwargs)
 
     def __repr__(self):
