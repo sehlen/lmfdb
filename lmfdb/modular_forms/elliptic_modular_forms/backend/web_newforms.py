@@ -358,7 +358,7 @@ class WebNewForm(WebObject, CachedRepresentation):
             # then we just ignore this field
             # This is for compatibility reasons
             # as older versions did not have the prec stored in the fs
-            self._file_key.pop('prec')
+            self._file_key.remove('prec')
         super(WebNewForm,self).update_from_db(**kwargs)
         if ignore_precision:
             # restore file_key
