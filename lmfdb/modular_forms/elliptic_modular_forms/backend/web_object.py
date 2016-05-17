@@ -707,7 +707,7 @@ class WebObject(object):
             for s in coll.find(query):
                 s.pop('_id')
                 k = {key:s[key] for key in cls._key}
-                o = cls(update_from_db=False)
+                o = cls(update_from_db=False, **k)
                 o.update_db_properties_from_dict(s)
                 yield o
         else:
