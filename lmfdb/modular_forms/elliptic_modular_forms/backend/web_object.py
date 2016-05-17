@@ -576,8 +576,8 @@ class WebObject(object):
         fs.delete(fid)
 
     def update_db_properties_from_dict(self, d):
-        for pn in self.db_properties:
-            p = self._properties[pn]
+        for p in self.db_properties():
+            pn = p.name
             if d.has_key(pn):
                 try:
                     p.set_from_db(d[pn])
@@ -588,8 +588,8 @@ class WebObject(object):
         return True
 
     def update_fs_properties_from_dict(self, d):
-        for pn in self.fs_properties:
-            p = self._properties[pn]
+        for p in self.fs_properties():
+            pn = p.name
             if d.has_key(pn):
                 try:
                     p.set_from_fs(d[pn])
