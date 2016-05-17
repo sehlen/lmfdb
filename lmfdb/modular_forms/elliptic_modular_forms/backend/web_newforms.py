@@ -305,7 +305,7 @@ class WebNewForm(WebObject, CachedRepresentation):
             WebqExp('q_expansion'),
             WebDict('_coefficients'),
             WebDict('_embeddings'),
-            WebInt('prec',value=0), 
+            WebInt('prec',value=0, save_to_db=False), 
             WebNumberField('base_ring'),
             WebNumberField('coefficient_field'),
             WebInt('coefficient_field_degree'),
