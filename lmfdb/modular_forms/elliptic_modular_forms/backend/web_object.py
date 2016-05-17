@@ -574,8 +574,30 @@ class WebObject(object):
             raise IndexError("Record does not exist")
         fid = r['_id']
         fs.delete(fid)
-                
 
+    def update_db_properties_from_dict(self, d):
+        for pn in self.db_properties:
+            p = self._properties[pn]
+            if d.has_key(pn):
+                try:
+                    p.set_from_db(d[pn])
+                    if not p.name in self._fs_properties:
+                        p.has_been_set(True)
+                except NotImplementedError:
+                    continue
+        return True
+
+    def update_fs_properties_from_dict(self, d):
+        for pn in self.fs_properties:
+            p = self._properties[pn]
+            if d.has_key(pn):
+                try:
+                    p.set_from_fs(d[pn])
+                    p.has_been_set(True)
+                except NotImplementedError:
+                    continue
+        return True
+    
     def update_from_db(self, ignore_non_existent = True, \
                        add_to_fs_query=None, add_to_db_query=None, \
                        update_from_fs=True, include_only=None):
@@ -684,12 +706,8 @@ class WebObject(object):
         if float(pymongo.version_tuple[0])>=3:
             for s in coll.find(query):
                 s.pop('_id')
-                if s.has_key('zeta_orders'):
-                    s.pop('zeta_orders')
-                if s.has_key('hecke_orbits'):
-                    s.pop('hecke_orbits')
-                print s
-                yield cls(update_from_db=False, **s)
+                o = cls(update_from_db=False)
+                o.update_db_properties_from_dict(s)
         else:
             for s in coll.find(query, fields = cls._key):
                 s.pop('_id')
