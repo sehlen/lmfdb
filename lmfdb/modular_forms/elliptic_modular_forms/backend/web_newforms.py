@@ -217,7 +217,7 @@ class WebEigenvalues(WebObject, CachedRepresentation):
             self._ap = {}
             for i in range(len(c)):
                 p = primes_to_lc[i]
-        
+                self._ap[p] = c[i]
         else:
             self._ap = {}
 
