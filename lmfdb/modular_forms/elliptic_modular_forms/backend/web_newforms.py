@@ -359,10 +359,14 @@ class WebNewForm(WebObject, CachedRepresentation):
             # This is for compatibility reasons
             # as older versions did not have the prec stored in the fs
             self._file_key.remove('prec')
+            self._add_to_fs_query = None
+            self._sort_files = []
         super(WebNewForm,self).update_from_db(**kwargs)
         if ignore_precision:
             # restore file_key
             self._file_key.append('prec')
+            self._add_to_fs_query = {'prec': {'$gt': int(self.prec-1)}}
+            self._sort_files = [('prec', pymongo.ASCENDING)]
 
     def __repr__(self):
         if self.dimension == 0:
