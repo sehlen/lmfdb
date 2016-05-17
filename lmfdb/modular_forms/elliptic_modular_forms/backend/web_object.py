@@ -489,10 +489,10 @@ class WebObject(object):
             add_to_fs_query = copy(self._add_to_fs_query)
             add_to_fs_query.update(q)
         if add_to_fs_query is not None:
-            file_key = self.file_key()
+            file_key = self.file_key_dict()
             file_key.update(add_to_fs_query)
         else:
-            file_key = self.file_key()
+            file_key = self.file_key_dict()
         sort = self._sort_files
         emf_logger.debug("add_to_fs_query: {0}".format(add_to_fs_query))
         emf_logger.debug("file_key: {0} fs={1}".format(file_key,self._file_collection))
