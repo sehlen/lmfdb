@@ -44,6 +44,7 @@ import riemann
 import logging
 import lattice
 import higher_genus_w_automorphisms
+import modlmf
 
 import raw
 from modular_forms.maass_forms.picard import mwfp
@@ -298,6 +299,8 @@ def get_configuration():
     replicaset =
     read_preference = NEAREST
     """
+    config_dir = '/'.join( os.path.dirname(os.path.abspath(__file__)).split('/')[0:-1])
+    mongo_client_config_filename = '{0}/{1}'.format(config_dir,mongo_client_config_filename)
     if os.path.exists(mongo_client_config_filename):
         from ConfigParser import ConfigParser;
         parser = ConfigParser()
