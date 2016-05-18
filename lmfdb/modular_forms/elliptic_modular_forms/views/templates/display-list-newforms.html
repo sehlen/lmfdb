@@ -53,8 +53,7 @@ info in this page is set by set_info_for_web_newform in emf_render_web_newform.p
 	      {% endif %}
 	      {% set varname = '\\alpha_{%s}' % loop.index %}
 	     {%endif%}
-	  {% set a30 = f.coefficient(3).list()[0] %}
-	      {% if (a30.parent().absolute_degree() == 1 and a30.height().str()|length>20) or a30.list()[0].height().str()|length>15 %}
+	      {% if f.complexity_of_first_nonvanishing_coefficient() > max_height %}
             <td>The Fourier coefficients of this newform are huge. They are available for download.</td>
 	    {% else %}
 	       {% set at_least_one_qexp_shown = True %}
