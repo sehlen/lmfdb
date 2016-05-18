@@ -907,7 +907,8 @@ class WebNumberField(WebDict):
         except RuntimeError:
             emf_logger.critical("could not set url for the label")
             url = ''
-        setattr(self._value, "lmfdb_url", url)
+        if url != ''
+            setattr(self._value, "lmfdb_url", url)
             
     def set_extended_properties(self):
         if self._has_been_set:
