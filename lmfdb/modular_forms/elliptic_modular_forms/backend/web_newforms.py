@@ -595,17 +595,27 @@ class WebNewForm(WebObject, CachedRepresentation):
     def url(self):
         return url_for('emf.render_elliptic_modular_forms', level=self.level, weight=self.weight, character=self.character.number, label=self.label)
 
-    def create_duplicate_record(self, prec=100):
+    def create_small_record(self, min_prec=20, want_prec=100, max_length = 52428800):
         ### creates a duplicate record (fs) of this webnewform
         ### with lower precision to load faster on the web
-        if prec>=self.prec:
+        ### we aim to have at most max_length bytes
+        ### but at least min_prec coefficients and we desire to have want_prec
+        if min_prec>=self.prec:
             raise ValueError("Need lower precision, self.prec = {}".format(self.prec))
-        self.prec=prec
-        self.q_expansion = self.q_expansion.truncate_powerseries(prec)
-        self._coefficients = {n:c for n,c in self._coefficients.iteritems() if n<prec}
-        self._embeddings['values'] = {n:c for n,c in self._embeddings['values'].iteritems() if n<prec}
-        self._embeddings['prec'] = prec
-        self.save_to_db()
+        l = len(self.get_file()[1]['length'])
+        if l > max_length:
+            nl = float(l)/float(self.prec)*float(want.prec)
+            if nl > max_length:
+                prec = max([floor(float(self.prec)/float(l)), min_prec])
+            else:
+                prec = want_prec
+            emf_logger.debug("Creating a new record with prec = {}".format(prec))
+            self.prec=prec
+            self.q_expansion = self.q_expansion.truncate_powerseries(prec)
+            self._coefficients = {n:c for n,c in self._coefficients.iteritems() if n<prec}
+            self._embeddings['values'] = {n:c for n,c in self._embeddings['values'].iteritems() if n<prec}
+            self._embeddings['prec'] = prec
+            self.save_to_db()
         
 
 from lmfdb.utils import cache
