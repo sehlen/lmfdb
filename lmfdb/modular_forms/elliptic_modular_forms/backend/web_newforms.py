@@ -607,7 +607,7 @@ class WebNewForm(WebObject, CachedRepresentation):
         if l > max_length:
             nl = float(l)/float(self.prec)*float(want_prec)
             if nl > max_length:
-                prec = max([floor(float(self.prec)/float(l)), min_prec])
+                prec = max([floor(float(self.prec)/float(l)*float(max_length)), min_prec])
             else:
                 prec = want_prec
             emf_logger.debug("Creating a new record with prec = {}".format(prec))
