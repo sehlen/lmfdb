@@ -900,6 +900,7 @@ class WebNumberField(WebDict):
                 setattr(self._value, "lmfdb_label", label)
             else:
                 emf_logger.critical("could not set lmfdb_pretty for the label")
+                label = ''
         if label != '':
             try:
                 url =  url_for("number_fields.by_label", label=label)
