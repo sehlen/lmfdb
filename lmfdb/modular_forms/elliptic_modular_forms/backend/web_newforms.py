@@ -93,6 +93,7 @@ from sage.all import (
      vector,
      latex,
      primes_first_n,
+     floor,
      loads,
      dumps
      )
