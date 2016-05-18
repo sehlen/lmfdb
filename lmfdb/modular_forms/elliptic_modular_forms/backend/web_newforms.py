@@ -413,13 +413,25 @@ class WebNewForm(WebObject, CachedRepresentation):
                 else:
                     return self.coefficient(n)
 
-    def complexity_of_first_nonvanishing_coefficient(self):
-        c = self.first_nonvanishing_coefficient(return_index=False)
-        l = c.list()
-        if l[0].parent().absolute_degree() == 1:
-            return len(str(max(r.height() for r in l)))*len(l)
-        else:
-            return len(str(max(r.height()*len(s.list()) for s in l for r in s.list())))*len(l)
+    def complexity_of_first_nonvanishing_coefficients(self, number_of_coefficients=3):
+        m = 0
+        n = 0
+        j = 0
+        while j < self.prec and n < number_of_coefficients:
+            c = self.coefficient(j)
+            j+=1
+            if c != 0:
+                n += 1
+            else:
+                continue
+            l = c.list()
+            if l[0].parent().absolute_degree() == 1:
+                a = len(str(max(r.height() for r in l)))*len(l)
+            else:
+                a = len(str(max(r.height()*len(s.list()) for s in l for r in s.list())))*len(l)
+            if a > m:
+                m = a
+        return m
 
     def coefficient_embedding(self,n,i):
         r"""

@@ -126,7 +126,7 @@ def set_info_for_web_newform(level=None, weight=None, character=None, label=None
     br_is_QQ = (bdeg == 1)
     if cf_is_QQ:
         info['satake'] = WNF.satake
-    if WNF.complexity_of_first_nonvanishing_coefficient() > default_max_height:
+    if WNF.complexity_of_first_nonvanishing_coefficients() > default_max_height:
         info['qexp'] = ""
         info['qexp_display'] = ''
         info['hide_qexp'] = True
@@ -207,7 +207,10 @@ def set_info_for_web_newform(level=None, weight=None, character=None, label=None
     emf_logger.debug("PREC2: {0}".format(prec))
     info['embeddings'] = WNF._embeddings['values'] #q_expansion_embeddings(prec, bprec,format='latex')
     info['embeddings_len'] = len(info['embeddings'])
-    properties2 = []
+    properties2 = [('Level', str(level)),
+                       ('Weight', str(weight)),
+                       ('Character', '$' + WNF.character.latex_name + '$'),
+                       ('Dimension of Galois orbit', str(WNF.dimension))]
     if (ZZ(level)).is_squarefree():
         info['twist_info'] = WNF.twist_info
         if isinstance(info['twist_info'], list) and len(info['twist_info'])>0:
@@ -216,10 +219,10 @@ def set_info_for_web_newform(level=None, weight=None, character=None, label=None
                 s = 'Is minimal<br>'
             else:
                 s = 'Is a twist of lower level<br>'
-            properties2 = [('Twist info', s)]
+            properties2 += [('Twist info', s)]
     else:
         info['twist_info'] = 'Twist info currently not available.'
-        properties2 = [('Twist info', 'not available')]
+        properties2 += [('Twist info', 'not available')]
     args = list()
     for x in range(5, 200, 10):
         args.append({'digits': x})
