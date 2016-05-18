@@ -541,6 +541,11 @@ class WebNewForm(WebObject, CachedRepresentation):
         files = self.get_file_list()
         return [x['prec'] for x in files]
 
+    def delete_file_with_prec(self, prec):
+        files = self.get_file_list({'prec': prec})
+        for f in files:
+            self._files.delete(f['_id'])
+
     def max_cn(self):
         r"""
         The largest N for which we are sure that we can compute a(n) for all 1<=n<=N
