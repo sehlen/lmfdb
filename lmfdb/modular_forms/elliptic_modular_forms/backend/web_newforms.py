@@ -602,9 +602,9 @@ class WebNewForm(WebObject, CachedRepresentation):
         ### but at least min_prec coefficients and we desire to have want_prec
         if min_prec>=self.prec:
             raise ValueError("Need lower precision, self.prec = {}".format(self.prec))
-        l = len(self.get_file()[1]['length'])
+        l = self._file_record_length
         if l > max_length:
-            nl = float(l)/float(self.prec)*float(want.prec)
+            nl = float(l)/float(self.prec)*float(want_prec)
             if nl > max_length:
                 prec = max([floor(float(self.prec)/float(l)), min_prec])
             else:
