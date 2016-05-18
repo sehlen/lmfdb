@@ -55,7 +55,7 @@ info in this page is set by set_info_for_web_newform in emf_render_web_newform.p
 	     {%endif%}
 	  {% set a30 = f.coefficient(3).list()[0] %}
 	      {% if (a30.parent().absolute_degree() == 1 and a30.height().str()|length>20) or a30.list()[0].height().str()|length>15 %}
-            <td>The \(q\)-expansion of this newform has huge Fourier coefficients. They are available for download.</td>
+            <td>The Fourier coefficients of this newform are huge. They are available for download.</td>
 	    {% else %}
 	       {% set at_least_one_qexp_shown = True %}
 	      <td>{{ f.q_expansion_latex(q_expansion_prec, varname) }}</td>
