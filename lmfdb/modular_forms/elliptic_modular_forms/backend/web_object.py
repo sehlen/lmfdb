@@ -705,7 +705,7 @@ class WebObject(object):
                     if p.include_in_update and m.has_key(p.name):
                         #emf_logger.debug("d[{0}]={1}".format(p.name,type(m.get(p.name))))
                         p.has_been_set(False)
-                        p.set_from_fs(d[p.name])
+                        p.set_from_fs(m[p.name])
                 succ_fs = True
                 emf_logger.debug("loaded from fs")
             except IndexError as e:
