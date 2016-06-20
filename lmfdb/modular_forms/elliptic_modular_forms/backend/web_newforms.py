@@ -288,7 +288,7 @@ class WebCoeffs(WebProperty):
                 default_value=None, convert_to = 'auto',
                      save_to_db=True, save_to_fs=True):
         if default_value is None:
-            default_value = {}
+            default_value = {'coeffs': {}, 'traces': {}}
         self._convert_to = convert_to
         self._elt_type = None
         self._coeff_cplxty = 0 #complexity of coefficients, used to hide q_expansions, for instance
