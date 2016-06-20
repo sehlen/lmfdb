@@ -651,6 +651,15 @@ class WebNewForm(WebObject, CachedRepresentation):
             c = self.coefficients([n])[0] 
         return c
 
+    def coefficient_trace(self, n):
+        if n==0:
+            if self.is_cuspidal:
+                return 0
+        if n < self.prec:
+            return self._coefficients.trace(n)
+        else:
+            raise ValueError('We do not have coefficient a({})'.format(n))
+
     def first_nonvanishing_coefficient(self, return_index = True):
         r"""
          Return the first Fourier coefficient of self
