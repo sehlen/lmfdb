@@ -320,8 +320,6 @@ class WebCoeffs(WebProperty):
     def from_fs(self, data):
         if not isinstance(data, dict):
             raise TypeError("Expected data to be of type dict, got {}".format(type(data)))
-        if len(data) == 0:
-            return data
         if not data.has_key('coeffs'):
             data = {'coeffs': data, 'traces': {}}
         else:
@@ -329,6 +327,8 @@ class WebCoeffs(WebProperty):
                 raise TypeError("Expected data['coeffs'] to be of type dict, got {}".format(type(data['coeffs'])))
             if not isinstance(data['traces'], dict):
                 raise TypeError("Expected data['traces'] to be of type dict, got {}".format(type(data['traces'])))
+        if len(data['coeffs']) == 0:
+            return data
         self.set_elt_type(data['coeffs'])
         return data
 
