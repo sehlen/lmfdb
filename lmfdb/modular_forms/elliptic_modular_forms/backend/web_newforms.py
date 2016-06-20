@@ -322,7 +322,7 @@ class WebCoeffs(WebProperty):
             raise TypeError("Expected data to be of type dict, got {}".format(type(data)))
         if len(data) == 0:
             return data
-        if not coeffs.has_key('coeffs'):
+        if not data.has_key('coeffs'):
             data = {'coeffs': data, 'traces': {}}
         else:
             if not isinstance(data['coeffs'], dict):
