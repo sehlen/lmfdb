@@ -317,17 +317,24 @@ class WebCoeffs(WebProperty):
                     'elt_type': self._elt_type}
     
 
-    def from_fs(self, coeffs):
-        if not isinstance(coeffs, dict):
-            raise TypeError("Expected coeffs to be of type dict, got {}".format(type(coeffs)))
-        if len(coeffs) == 0:
-            return coeffs
-        self.set_elt_type(coeffs)
-        return coeffs
+    def from_fs(self, data):
+        if not isinstance(data, dict):
+            raise TypeError("Expected data to be of type dict, got {}".format(type(data)))
+        if len(data) == 0:
+            return data
+        if not coeffs.has_key('coeffs'):
+            data = {'coeffs': data, 'traces': {}}
+        else:
+            if not isinstance(data['coeffs'], dict):
+                raise TypeError("Expected data['coeffs'] to be of type dict, got {}".format(type(data['coeffs'])))
+            if not isinstance(data['traces'], dict):
+                raise TypeError("Expected data['traces'] to be of type dict, got {}".format(type(data['traces'])))
+        self.set_elt_type(data['coeffs'])
+        return data
 
     def set_elt_type(self, coeffs=None, elt_type=None):
         if coeffs is None:
-            coeffs = self._value
+            coeffs = self._value['coeffs']
         if elt_type is None:
             if isinstance(coeffs.values()[0], sage.rings.number_field.number_field_element.NumberFieldElement_absolute):
                 self._elt_type = 'nfabs'
@@ -345,7 +352,7 @@ class WebCoeffs(WebProperty):
         return self._value
 
     def convert(self):
-        if len(self._value) == 0:
+        if len(self._value['coeffs']) == 0:
             return 
         convert_to = self._convert_to
         #more types to come?
@@ -359,11 +366,11 @@ class WebCoeffs(WebProperty):
             if self._elt_type == 'nfrel':
                 convert_to = 'poly'
         if convert_to == 'poly':
-            elt = self._value.values()[0]
+            elt = self._value['coeffs'].values()[0]
             if self._elt_type == 'nfabs':
                 emf_logger.debug("Converting from nfabs to poly!")
                 R = PolynomialRing(QQ,names=str(elt.parent().gen()))
-                self._value  = {k: R(str(v)) for k,v in self._value.iteritems()}
+                self._value  = {k: R(str(v)) for k,v in self._value['coeffs'].iteritems()}
             elif self._elt_type == 'nfrel':
                 emf_logger.debug("Converting from nfrel to poly!")
                 if elt.parent().base_ring() == QQ:
@@ -374,22 +381,25 @@ class WebCoeffs(WebProperty):
                 #R = PolynomialRing(QQ, names=[str(self._value.values()[0].parent().base_ring().gen()),\
                 #                                  str(self._value.values()[0].parent().gen())])
                 self._elt_type = 'poly'
-                self._value = {k: T(str(v)) for k,v in self._value.iteritems()}
+                self._value['coeffs'] = {k: T(str(v)) for k,v in self._value['coeffs'].iteritems()}
+
+    def trace(self, n):
+        return self._value['traces'][n]
 
     def value(self):
         return self
 
     def __getitem__(self, n):
-        return self._value[n]
+        return self._value['coeffs'][n]
 
     def get(self,n,default=None):
-        return self._value.get(n,default)
+        return self._value['coeffs'].get(n,default)
 
     def values(self):
-        return self._value.values()
+        return self._value['coeffs'].values()
 
     def keys(self):
-        return self._value.keys()
+        return self._value['coeffs'].keys()
 
     def first_nonvanishing_coefficient(self, return_index=False):
         r"""
@@ -403,7 +413,7 @@ class WebCoeffs(WebProperty):
             else:
                 return a
         else:
-            for n in range(2,len(self._value)):
+            for n in range(2,len(self._value['coeffs'])):
                 a = self.get(n)
                 if a != 0:
                     self._nv_coeff_index = n
@@ -439,7 +449,7 @@ class WebCoeffs(WebProperty):
             m = 0
             n = 0
             j = 2
-            while j < len(self._value) and n < number_of_coefficients:
+            while j < len(self._value['coeffs']) and n < number_of_coefficients:
                 c = self.get(j)
                 j+=1
                 if c != 0:
@@ -460,7 +470,7 @@ class WebCoeffs(WebProperty):
         return self._coeff_cplxty
 
     def __setitem__(self, n, v):
-        self._value[n] = v
+        self._value['coeffs'][n] = v
         if n>1 and v != 0:
             if self._nv_coeff_index is None or self._nv_coeff_index > n:
                 #setting first non-vanishing (n>1) coefficient and its norm and trace automatically
@@ -469,19 +479,19 @@ class WebCoeffs(WebProperty):
                 self.first_nonvanishing_coefficient_trace()
 
     def iteritems(self):
-        return self._value.iteritems()
+        return self._value['coeffs'].iteritems()
 
     def __iter__(self):
-        return self._value.itervalues()
+        return self._value['coeffs'].itervalues()
 
     def __len__(self):
-        return len(self._value)
+        return len(self._value['coeffs'])
 
     def __contains__(self, a):
-        return a in self._value
+        return a in self._value['coeffs']
 
     def __repr__(self):
-        return "Collection of {0} coefficients.".format(len(self._value))
+        return "Collection of {0} coefficients.".format(len(self._value['coeffs']))
 
     
 class WebNewForm(WebObject, CachedRepresentation):
