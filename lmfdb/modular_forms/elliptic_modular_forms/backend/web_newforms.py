@@ -318,6 +318,8 @@ class WebCoeffs(WebProperty):
     
 
     def from_fs(self, data):
+        if data is None:
+            return self._default_value
         if not isinstance(data, dict):
             raise TypeError("Expected data to be of type dict, got {}".format(type(data)))
         if not data.has_key('coeffs'):

@@ -148,7 +148,7 @@ class WebProperty(object):
         self.set_extended_properties()
 
     def set_from_db(self, val):
-        self._value = self.from_db(val)
+        self.set_value(self.from_db(val))
         self.set_db_value(self.from_db(val))
         self.set_extended_properties()
 
