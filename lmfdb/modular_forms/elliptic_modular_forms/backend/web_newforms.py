@@ -387,7 +387,7 @@ class WebCoeffs(WebProperty):
         return self._value['traces'][n]
 
     def value(self):
-        return self._value['coeffs']
+        return self
 
     def set_value(self, v):
         self._value['coeffs'] = v
