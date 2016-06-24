@@ -934,12 +934,13 @@ class WebNewForm(WebObject, CachedRepresentation):
             include_coeffs = self.complexity_of_first_nonvanishing_coefficients() <= default_max_height
             if include_coeffs:
                 self.q_expansion = self.q_expansion.truncate_powerseries(prec)
+                self.q_expansion.change_ring(QQ)
                 self._coefficients = {n:c for n,c in self._coefficients.iteritems() if n<prec}
             else:
                 self.q_expansion = self.q_expansion.truncate_powerseries(1)
                 self._coefficients = {}
                 self.prec = 0
-                self.coefficient_field = NumberField(self.absolute_polynomial, names=str(self.coefficient_field.gen()))
+                #self.coefficient_field = NumberField(self.absolute_polynomial, names=str(self.coefficient_field.gen()))
             self._embeddings['values'] = {n:c for n,c in self._embeddings['values'].iteritems() if n<prec}
             self._embeddings['prec'] = prec
             self.save_to_db()
